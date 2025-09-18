@@ -1,0 +1,19 @@
+../virt/
+venv/
+virt/
+
+# Python junk
+*.pyc
+__pycache__/
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+
+# Env files
+.env
+
+# IDE/editor
+.vscode/
+.idea/
