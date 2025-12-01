@@ -22,7 +22,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.michaelharveysaturius_lgtm }}
-          password: ${{ secrets.11BW2MB3I0N5lYpagizX9k_fCXwmHl4n15M5CmlQD1GiPNjwTJosdfEW7Fd0YHQWAwJ4YKCL3WHb9RFtnl }}
+          password: ${{ secrets.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 }}
 
       - name: Extract metadata (tags)
         id: meta
