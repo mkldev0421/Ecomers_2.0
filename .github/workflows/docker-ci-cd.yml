@@ -21,8 +21,9 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ mkldev0421 }} 
-          password: ${{ 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 }}
+          username: ${{ secrets.CR_USERNAME }}
+          password: ${{ secrets.CR_TOKEN }}
+
 
       - name: Extract metadata (tags)
         id: meta
