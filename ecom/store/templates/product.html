@@ -1,73 +1,96 @@
 {% extends 'base.html' %}
+<!-- Template: Product detail page; shows product image, pricing, description, and add-to-cart -->
 {% block content %}
 
-
-
-<div class="container">
-<br/>
-
-
-<div class="card mb-3">
-  <div class="row g-0">
-    <div class="col-md-4">
-      <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+<div class="container py-5">
+  <div class="row mb-5">
+    <div class="col-12">
+      <a href="{% url 'home'%}" class="btn btn-sm btn-outline-dark mb-4">
+        <i class="bi-arrow-left me-2"></i>Back to Products
+      </a>
     </div>
-    <div class="col-md-8">
-      <div class="card-body">
-        <center>
-        <h1 class="display-5 fw-bold text-primary mb-4">{{ product.name }}</h1>
-        <br/>
-        <p class="card-text justified">{{ product.description }}</p>
-        
-        {% if product.is_sale %}
-        <div class="d-flex justify-content-center small text-warning mb-2">
-                <div class="bi-star-fill"></div>
-                &nbsp;&nbsp;Sale!&nbsp;&nbsp;
-                <div class="bi-star-fill"></div>
-                </div>
+  </div>
 
-                <!-- Product price-->
-                <strike>
-                ${{ product.price }}
-                </strike>
-                &nbsp;
-                ${{ product.sale_price }}
-
-
-
-        {% else %}
-            ${{ product.price }}
-            
-        {% endif %}
-            <br/><br/>
-            <div class="row justify-content-center">
-                <div class="col-md-2">Quantity:</div>
-                <div class="col-md-2">
-                <select class="form-select form-select-sm" id="qty-cart">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-                </div>
+  <!-- Card: product detail container -->
+  <div class="card product-card h-100 shadow-lg">
+    <div class="row g-0">
+      <div class="col-lg-5">
+        <div class="p-4 d-flex align-items-center justify-content-center" style="min-height: 450px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
+          <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}" style="max-height: 400px; object-fit: contain;">
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="card-body p-5">
+          <h1 class="display-5 fw-bold text-dark mb-3">{{ product.name }}</h1>
+          
+          <!-- Pricing block: shows sale badge, regular price, and savings when applicable -->
+          <div class="mb-4">
+            {% if product.is_sale %}
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="badge bg-primary">
+                <i class="bi-lightning-charge me-1"></i>LIMITED SALE
+              </div>
             </div>
-            <br/><br/>
-        <a href="{% url 'home'%}" class="btn btn-secondary">Home</a>
-        <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">Add To Cart</button>
+            <div class="price-section">
+              <strike class="text-muted fs-5">${{ product.price }}</strike>
+              <span class="text-primary fw-bold fs-3">${{ product.sale_price }}</span>
+              <span class="badge bg-success ms-2">Save ${{ product.price|add:product.sale_price|stringformat:".2f" }}</span>
+            </div>
+            {% else %}
+            <div class="price-section">
+              <span class="text-primary fw-bold fs-2">${{ product.price }}</span>
+            </div>
+            {% endif %}
+          </div>
 
-    </center>
+          <!-- Description block -->
+          <div class="mb-4">
+            <h5 class="fw-bold text-dark">Description</h5>
+            <p class="text-muted lead">{{ product.description }}</p>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-bold text-dark mb-2">Quantity:</label>
+            <div class="input-group" style="width: 150px;">
+              <select class="form-select" id="qty-cart">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Actions: add to cart and continue shopping buttons -->
+          <div class="d-grid gap-2 d-sm-flex">
+            <button type="button" value="{{ product.id }}" class="btn btn-secondary btn-lg flex-grow-1" id="add-cart">
+              <i class="bi-cart-plus me-2"></i>Add To Cart
+            </button>
+            <a href="{% url 'home'%}" class="btn btn-outline-dark btn-lg">
+              <i class="bi-house me-2"></i>Continue Shopping
+            </a>
+          </div>
+
+          <div class="mt-4 p-3 bg-light rounded">
+            <small class="text-muted d-flex align-items-center">
+              <i class="bi-check-circle text-success me-2"></i>
+              In Stock - Free Shipping on Orders Over $50
+            </small>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-</div>
-        	
-
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
 <script>
+// Script: AJAX add-to-cart handler (updates cart badge and shows toast)
 // Check if button pressed
 $(document).on('click', '#add-cart', function(e){
     e.preventDefault();
@@ -82,26 +105,27 @@ $(document).on('click', '#add-cart', function(e){
         },
 
         success: function(json){
-            //console.log(json)
             document.getElementById("cart_quantity").textContent = json.qty
-            location.reload();
+            // Show toast notification
+            const toast = document.createElement('div');
+            toast.className = 'position-fixed bottom-0 end-0 p-3';
+            toast.style.zIndex = '11';
+            toast.innerHTML = `
+              <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <i class="bi-check-circle me-2"></i>
+                <strong>Success!</strong> Product added to cart.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
         },
 
         error: function(xhr, errmsg, err){
-
+            console.error('Error:', errmsg);
         }
-
-
     });
-
-
-
 })
-
-
-
-
 </script>
-
 
 {% endblock %}

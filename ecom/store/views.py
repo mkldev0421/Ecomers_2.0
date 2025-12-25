@@ -14,17 +14,24 @@ from django.db.models import Q
 import json
 from cart.cart import Cart
 
+"""
+views.py
+Purpose: Request handlers for the store app (page rendering and simple form handlers).
+Each view returns templates with context expected by the frontend.
+"""
+
+
 def search(request):
+	# Handles product search form (POST). Returns results or an inline 'no_results' flag.
 	if request.method == "POST":
-		searched = request.POST['searched']
-		searched = Product.objects.filter(Q(name__icontains=searched) | Q(description__icontains=searched))
-		if not searched:
-			messages.success(request, "That Product Does Not Exist...Please try Again.")
-			return render(request, "search.html", {})
+		term = request.POST.get('searched', '').strip()
+		results = Product.objects.filter(Q(name__icontains=term) | Q(description__icontains=term))
+		if not results:
+			return render(request, "search.html", {'searched': [], 'searched_term': term, 'no_results': True})
 		else:
-			return render(request, "search.html", {'searched':searched})
+			return render(request, "search.html", {'searched': results, 'searched_term': term})
 	else:
-		return render(request, "search.html", {})	
+		return render(request, "search.html", {})
 
 def update_info(request):
 	if request.user.is_authenticated:

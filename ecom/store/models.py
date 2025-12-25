@@ -3,6 +3,13 @@ import datetime
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
+"""
+models.py
+Purpose: Data models for the store app (Profile, Category, Product, Order).
+Each class represents a database table used by views and templates.
+"""
+
+
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	date_modified = models.DateTimeField(auto_now=True)
@@ -18,12 +25,14 @@ class Profile(models.Model):
 		return self.user.username
 
 def create_profile(sender, instance, created, **kwargs):
+	# Signal: create Profile automatically when a new User is created
 	if created:
 		Profile.objects.get_or_create(user=instance)
 
 post_save.connect(create_profile, sender=User)
 
 class Category(models.Model):
+	# Category: groups products for navigation and filtering
 	name = models.CharField(max_length=50)
 
 	def __str__(self):
@@ -33,6 +42,7 @@ class Category(models.Model):
 		verbose_name_plural = 'categories'
 
 class Customer(models.Model):
+    # Customer: legacy/customer storage for orders (simple contact fields)
 	first_name = models.CharField(max_length=50)
 	last_name = models.CharField(max_length=50)
 	phone = models.CharField(max_length=10)
@@ -43,6 +53,7 @@ class Customer(models.Model):
 		return f'{self.first_name} {self.last_name}'
 
 class Product(models.Model):
+    # Product: stores item details, pricing, image, and sale flags
 	name = models.CharField(max_length=100)
 	price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
 	category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
@@ -55,6 +66,7 @@ class Product(models.Model):
 		return self.name
 
 class Order(models.Model):
+    # Order: links customer to purchased product and tracks status
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
 	customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 	quantity = models.IntegerField(default=1)

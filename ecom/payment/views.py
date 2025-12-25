@@ -12,7 +12,14 @@ from paypal.standard.forms import PayPalPaymentsForm
 from django.conf import settings
 import uuid
 
+"""
+payment/views.py
+Purpose: Payment and order management views (admin dashboards, order processing, checkout helpers).
+"""
+
+
 def orders(request, pk):
+    # Admin: view and update a single order's shipping status
 	if request.user.is_authenticated and request.user.is_superuser:
 		order = Order.objects.get(id=pk)
 		items = OrderItem.objects.filter(order=pk)
@@ -35,6 +42,7 @@ def orders(request, pk):
 		return redirect('home')
 
 def not_shipped_dash(request):
+    # Admin dashboard: list orders not shipped
 	if request.user.is_authenticated and request.user.is_superuser:
 		orders = Order.objects.filter(shipped=False)
 		if request.POST:
@@ -52,6 +60,7 @@ def not_shipped_dash(request):
 		return redirect('home')
 
 def shipped_dash(request):
+    # Admin dashboard: list shipped orders
 	if request.user.is_authenticated and request.user.is_superuser:
 		orders = Order.objects.filter(shipped=True)
 		if request.POST:
@@ -69,6 +78,7 @@ def shipped_dash(request):
 		return redirect('home')
 
 def process_order(request):
+    # Processes cart into Order and OrderItem records and clears session/cart
 	if request.POST:
 		cart = Cart(request)
 		cart_products = cart.get_prods
@@ -138,6 +148,7 @@ def process_order(request):
 		return redirect('home')
 
 def billing_info(request):
+    # Prepares billing context (PayPal form) and stores shipping info in session
 	if request.POST:
 		cart = Cart(request)
 		cart_products = cart.get_prods
@@ -176,6 +187,7 @@ def billing_info(request):
 		return redirect('home')
 
 def checkout(request):
+    # Renders checkout form with shipping info for authenticated or guest users
 	cart = Cart(request)
 	cart_products = cart.get_prods
 	quantities = cart.get_quants
@@ -190,7 +202,9 @@ def checkout(request):
 		return render(request, "payment/checkout.html", {"cart_products":cart_products, "quantities":quantities, "totals":totals, "shipping_form":shipping_form})
 
 def payment_success(request):
+	# Render payment success confirmation page
 	return render(request, "payment/payment_success.html", {})
 
 def payment_failed(request):
+	# Render payment failed page
 	return render(request, "payment/payment_failed.html", {})

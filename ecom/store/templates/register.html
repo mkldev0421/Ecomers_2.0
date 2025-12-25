@@ -1,50 +1,76 @@
 {% extends 'base.html' %}
+<!-- Template: Register page; form to create a new user account -->
 {% block content %}
 
-<!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Register</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">Register for a User Account</p>
-                </div>
-            </div>
-        </header>
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Create Account</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Join GamerStop Today</p>
+        </div>
+    </div>
+</header>
 
-        <div class="container">
-        	<div class="row">
-        		<div class="col-md-6 offset-md-3">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h4 class="card-title fw-bold text-center mb-4">
+                        <i class="bi-person-plus me-2"></i>Register
+                    </h4>
 
-                        <br/><br/>
+                    <!-- Form: registration (iterates Django form fields) -->
                     <form method="POST" action="{% url 'register' %}">
                         {% csrf_token %}
                         
                         {% for field in form %}
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="{{ field.id_for_label }}" class="form-label fw-bold text-dark">
                                 {{ field.label }}
                             </label>
-                            {{ field }}
+                            {% if field.field.widget.input_type == "textarea" %}
+                                {{ field }}
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
                             {% if field.errors %}
-                            <div class="text-danger small">{{ field.errors.0 }}</div>
+                            <div class="text-danger small mt-2">
+                                <i class="bi-exclamation-circle me-1"></i>
+                                {{ field.errors.0 }}
+                            </div>
                             {% endif %}
                         </div>
                         {% endfor %}
-                        <br/><br/>
-                        <button type="submit" class="btn btn-secondary">
-                        Register
+
+                        <button type="submit" class="btn btn-secondary w-100 btn-lg fw-bold mb-3">
+                            <i class="bi-person-plus me-2"></i>Create Account
                         </button>
-                    
                     </form>
 
-                    <br/><br/>
-                    <br/><br/>
-                    <br/><br/>
-                    <br/><br/>
-                    <br/><br/>
-                    <br/><br/>
-                    <br/><br/>
-        		</div>
-        	</div>
+                    <hr>
+
+                    <p class="text-center text-muted mb-0">
+                        Already have an account? 
+                        <a href="{% url 'login' %}" class="text-decoration-none fw-bold">
+                            Login here
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mt-4 bg-light border-0">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3">Why Create an Account?</h6>
+                    <ul class="list-unstyled small text-muted">
+                        <li class="mb-2"><i class="bi-check-circle text-success me-2"></i>Track your orders</li>
+                        <li class="mb-2"><i class="bi-check-circle text-success me-2"></i>Save your preferences</li>
+                        <li><i class="bi-check-circle text-success me-2"></i>Access exclusive deals</li>
+                    </ul>
+                </div>
+            </div>
         </div>
+    </div>
+</div>
+
 {% endblock %}

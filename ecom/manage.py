@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-"""Django's command-line utility for administrative tasks."""
+"""Manage: Django command-line utility.
+Purpose: Entry point to run management commands (runserver, migrate, createsuperuser).
+"""
 import os
 import sys
 

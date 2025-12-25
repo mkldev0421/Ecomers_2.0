@@ -3,6 +3,8 @@ from django.urls import path, include
 from . import settings
 from django.conf.urls.static import static
 
+# urls.py
+# Purpose: Project URL routing - include app routes and static/media handlers.
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('store.urls')),

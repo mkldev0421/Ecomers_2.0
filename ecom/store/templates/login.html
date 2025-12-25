@@ -1,48 +1,65 @@
 {% extends 'base.html' %}
+<!-- Template: Login page; sign-in form for existing users -->
 {% block content %}
 
-<!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Login</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">Log In To Your Account...</p>
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Login</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Welcome Back to GamerStop</p>
+        </div>
+    </div>
+</header>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h4 class="card-title fw-bold text-center mb-4">
+                        <i class="bi-box-arrow-in-right me-2"></i>Sign In
+                    </h4>
+
+                    <!-- Form: user login (POST -> login view) -->
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="username" class="form-label fw-bold text-dark">Username</label>
+                            <input type="text" class="form-control form-control-lg" name="username" id="username" placeholder="Enter your username" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-bold text-dark">Password</label>
+                            <input type="password" class="form-control form-control-lg" name="password" id="password" placeholder="Enter your password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-secondary w-100 btn-lg fw-bold mb-3">
+                            <i class="bi-box-arrow-in-right me-2"></i>Login
+                        </button>
+                    </form>
+
+                    <hr>
+
+                    <p class="text-center text-muted mb-0">
+                        Don't have an account? 
+                        <a href="{% url 'register' %}" class="text-decoration-none fw-bold">
+                            Create one here
+                        </a>
+                    </p>
                 </div>
             </div>
-        </header>
 
-        <div class="container">
-        	<div class="row">
-        		<center>
-        			<div class="col-8">
-
-        				<br/><br/>
-              <form method="POST" action="{% url 'login' %}">
-                  {% csrf_token %}
-                  
-                <div class="mb-3">
-                  
-                  <input type="text" class="form-control" name="username" placeholder="Enter Your Username">
-                  
+            <div class="card mt-4 bg-light border-0">
+                <div class="card-body text-center">
+                    <small class="text-muted">
+                        <i class="bi-shield-lock me-2"></i>
+                        Your account is secure and protected
+                    </small>
                 </div>
-                <div class="mb-3">
-                  
-                  <input type="password" class="form-control" name="password" placeholder="Enter Your Password">
-                </div>
-                <br/><br/>
-                <button type="submit" class="btn btn-secondary">Login</button>
-              </form>
-
-              <br/><br/>
-              <br/><br/>
-              <br/><br/>
-              <br/><br/>
-              <br/><br/>
-              <br/><br/>
-              <br/><br/>
-        			</div>
-        		</center>
-        	</div>
+            </div>
         </div>
+    </div>
+</div>
 
 {% endblock %}

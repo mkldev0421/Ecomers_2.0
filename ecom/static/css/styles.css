@@ -4,6 +4,15 @@
 * Copyright 2013-2023 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-shop-homepage/blob/master/LICENSE)
 */
+/*
+  File: styles.css
+  Purpose: Site-wide styling and design tokens. Sections below include
+  - CSS variables (design tokens)
+  - Typography and layout helpers
+  - Component styles (cards, buttons, forms)
+  - Custom blocks (sale-stars, product-card tweaks)
+  Use these headings to quickly find where to change visual styles.
+*/
 /*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -41,7 +50,20 @@
   --bs-warning: #ffc107;
   --bs-danger: #dc3545;
   --bs-light: #f8f9fa;
-  --bs-dark: #212529;
+  --bs-dark: #1a1f36;
+  
+  /* Custom design variables */
+  --primary-color: #00287e;
+  --secondary-color: #4300b6;/* */
+  --accent-color: #ec4899;
+  --success-color: #10b981;
+  --dark-bg: #0f172a;
+  --card-shadow: 0 4px 15px rgba(79, 0, 170, 0.24);
+  --card-shadow-hover: 0 8px 25px rgba(79, 0, 170, 0.288);
+
+
+
+
   --bs-primary-rgb: 13, 110, 253;
   --bs-secondary-rgb: 108, 117, 125;
   --bs-success-rgb: 25, 135, 84;
@@ -93,13 +115,13 @@
 
 body {
   margin: 0;
-  font-family: var(--bs-body-font-family);
+  /*font-family: var(--bs-body-font-family);*/
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
   line-height: var(--bs-body-line-height);
   color: var(--bs-body-color);
   text-align: var(--bs-body-text-align);
-  background-color: var(--bs-body-bg);
+  background-color: var(--bs-body-bg);/**/
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -7043,9 +7065,9 @@ textarea.form-control-lg {
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 }
 
-.shadow-lg {
+/*.shadow-lg {
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
-}
+}*/
 
 .shadow-none {
   box-shadow: none !important;
@@ -8136,7 +8158,7 @@ textarea.form-control-lg {
 
 .bg-success {
   --bs-bg-opacity: 1;
-  background-color: rgba(var(--bs-success-rgb), var(--bs-bg-opacity)) !important;
+  background-color: rgba(37, 99, 235, 0.15) !important;
 }
 
 .bg-info {
@@ -11035,6 +11057,357 @@ a, .btn, .card, .dropdown-menu, .form-control, .form-select, .navbar {
 /* Product page title emphasis */
 .text-primary { color: var(--app-purple-400) !important; }
 .display-5 { font-size: 2.5rem; }
+
+/* ===== MODERN DESIGN ENHANCEMENTS ===== */
+
+/* Navbar styling */
+.navbar {
+  
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 75%) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  
+  /* 1. Make background fully transparent 
+  background: transparent !important; 
+  
+  box-shadow: none; 
+  
+  position: absolute; 
+  top: 0;
+  width: 100%;
+  z-index: 1000; Ensures it stays on top of the image 
+  
+  transition: all 0.3s ease;
+  */
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.80)/*linear-gradient(135deg, var(--primary-color), var(--secondary-color))*/;
+  -webkit-background-clip: text;
+  /*-webkit-text-fill-color: transparent;*/
+  background-clip: text;
+}
+
+.navbar .nav-link {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.navbar .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  transition: width 0.3s ease;
+}
+
+.navbar .nav-link:hover::after {
+  width: 100%;
+}
+
+/*
+html, body {
+    margin: 0; /* REMOVE DEFAULT BROWSER MARGINS 
+    padding: 0;
+    width: 100%;
+}
+*/
+/* Hero headers */
+header.bg-dark {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 60%) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+header.bg-dark::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+header.bg-dark .text-center {
+  position: relative;
+  z-index: 1;
+}
+
+header.bg-dark h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Card enhancements */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.product-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card img {
+  transition: transform 0.4s ease;
+  /*height: 250px;*/
+  object-fit: cover;
+}
+
+.product-card:hover img {
+  transform: scale(1.08);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-footer {
+  background: #f8fafc !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+/* Badges */
+.badge {
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge.bg-dark {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+}
+
+.btn-outline-dark {
+  border: 2px solid #1a1f36;
+  color: #1a1f36;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-dark:hover {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-color: transparent;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+}
+
+.btn-secondary {
+  background: #6c757d;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
+}
+
+.btn-outline-light {
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+  background: white;
+  color: var(--primary-color) !important;
+  border-color: white;
+  transform: translateY(-2px);
+}
+
+/* Form styling */
+.form-control, .form-select {
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+/* Price styling */
+.price-section {
+  /*display: flex;*/
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  font-size: 1.25rem;
+}
+
+.price-section strike {
+  color: #9ca3af;
+  text-decoration: line-through;
+  font-size: 1rem;
+}
+
+.price-section span {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* Footer */
+footer.bg-dark {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+  margin-top: 4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+footer.bg-dark p {
+  opacity: 0.9;
+}
+
+/* Alert styling */
+.alert {
+  border: none;
+  border-radius: 8px;
+  border-left: 4px solid;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.alert-warning {
+  border-left-color: #fbbf24;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+}
+
+/* Text enhancements */
+h1, h2, h3, h4, h5, h6 {
+  
+  font-weight: 700;
+}
+
+.fw-bolder {
+  font-weight: 800 !important;
+}
+
+/* Section styling */
+section {
+  transition: all 0.3s ease;
+}
+
+section.py-5 {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);/**/
+}
+
+/* Container enhancements */
+.container {
+  transition: all 0.3s ease;
+}
+
+/* Responsive enhancements */ 
+@media (max-width: 768px) {
+  header.bg-dark h1 {
+    font-size: 2.5rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+  
+  .card img {
+    height: 200px;
+  }
+}
+
+/* Utility classes */
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shadow-sm-custom {
+  box-shadow: var(--card-shadow);
+}
+
+.shadow-lg-custom {
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* Sale badge animation */
+.badge.bg-dark {
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+/* Sale star styling */
+.sale-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+.sale-star {
+  color: #f59e0b; /* gold */
+  font-size: 1.15rem;
+  margin-right: 0.15rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.08);
+}
+.sale-star:last-child { margin-right: 0; }
+
+/* Slightly larger on product cards */
+.product-card .sale-star { font-size: 1.25rem; }
 
 /* Hero section drop shadow */
 .bg-dark .display-4,

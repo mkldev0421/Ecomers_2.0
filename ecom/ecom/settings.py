@@ -3,6 +3,9 @@ import os
 
 from dotenv import load_dotenv
 
+# settings.py
+# Purpose: Django project configuration (installed apps, middleware, templates, DB, static files)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

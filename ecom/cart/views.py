@@ -4,7 +4,16 @@ from store.models import Product
 from django.http import JsonResponse
 from django.contrib import messages
 
+"""
+cart/views.py
+Purpose: AJAX-backed cart handlers and cart summary view.
+Functions:
+- cart_summary: renders the cart page
+- cart_add/cart_delete/cart_update: handle AJAX POSTs and return JSON
+"""
+
 def cart_summary(request):
+	# Renders the shopping cart page with current items and totals
 	cart = Cart(request)
 	cart_products = cart.get_prods
 	quantities = cart.get_quants
@@ -12,6 +21,7 @@ def cart_summary(request):
 	return render(request, "cart_summary.html", {"cart_products":cart_products, "quantities":quantities, "totals":totals})
 
 def cart_add(request):
+	# AJAX endpoint: add product to cart, returns updated cart quantity
 	cart = Cart(request)
 	if request.POST.get('action') == 'post':
 		product_id = int(request.POST.get('product_id'))
@@ -28,6 +38,7 @@ def cart_add(request):
 		return response
 
 def cart_delete(request):
+	# AJAX endpoint: remove product from cart, returns removed product id
 	cart = Cart(request)
 	if request.POST.get('action') == 'post':
 		product_id = int(request.POST.get('product_id'))
@@ -38,6 +49,7 @@ def cart_delete(request):
 		return response
 
 def cart_update(request):
+	# AJAX endpoint: update quantity for a cart product
 	cart = Cart(request)
 	if request.POST.get('action') == 'post':
 		product_id = int(request.POST.get('product_id'))
