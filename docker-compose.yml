@@ -1,0 +1,69 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: ecom_db
+    restart: always
+    environment:
+      POSTGRES_USER: ecom_user
+      POSTGRES_PASSWORD: supersecretpassword
+      POSTGRES_DB: ecom_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecom_user -d ecom_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+    networks:
+      - ecom_network
+
+  # Django Service (Frontend/Web)
+  frontend:
+    build:
+      context: .
+      dockerfile: ecom/Dockerfile
+    container_name: ecom_frontend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_DB: ecom_db
+      POSTGRES_USER: ecom_user
+      POSTGRES_PASSWORD: supersecretpassword
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      DJANGO_SETTINGS_MODULE: ecom.settings
+    ports:
+      - "8001:8000"
+    networks:
+      - ecom_network
+
+  # FastAPI Service
+  fastapi:
+    build:
+      context: .
+      dockerfile: API/Dockerfile
+    container_name: ecom_fastapi
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_DB: ecom_db
+      POSTGRES_USER: ecom_user
+      POSTGRES_PASSWORD: supersecretpassword
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    ports:
+      - "8002:8001"
+    networks:
+      - ecom_network
+
+volumes:
+  postgres_data:
+
+networks:
+  ecom_network:

@@ -3,25 +3,12 @@
 {% block content %}
 
 <div class="container py-5">
-  <div class="row mb-5">
-    <div class="col-12">
-      <a href="{% url 'home'%}" class="btn btn-sm btn-outline-dark mb-4">
-        <i class="bi-arrow-left me-2"></i>Back to Products
-      </a>
-    </div>
+  <div style="display: flex; flex-direction: row; width: 100%; gap: 35px; margin-top: 50px;" class="container">
+  <div class="p-4 d-flex align-items-center justify-content-center product-card" style="min-height: 450px; width: 100%; border-radius: 15px;">
+    <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}" style="max-height: 400px; object-fit: contain;">
   </div>
-
-  <!-- Card: product detail container -->
-  <div class="card product-card h-100 shadow-lg">
-    <div class="row g-0">
-      <div class="col-lg-5">
-        <div class="p-4 d-flex align-items-center justify-content-center" style="min-height: 450px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
-          <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}" style="max-height: 400px; object-fit: contain;">
-        </div>
-      </div>
-      <div class="col-lg-7">
-        <div class="card-body p-5">
-          <h1 class="display-5 fw-bold text-dark mb-3">{{ product.name }}</h1>
+  <div style="display: flex; flex-direction: column; width: 100%;">
+    <h1 class="display-5 fw-bold text-dark mb-3">{{ product.name }}</h1>
           
           <!-- Pricing block: shows sale badge, regular price, and savings when applicable -->
           <div class="mb-4">
@@ -83,11 +70,11 @@
               In Stock - Free Shipping on Orders Over $50
             </small>
           </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
+</div>
+
+
 
 <script>
 // Script: AJAX add-to-cart handler (updates cart badge and shows toast)

@@ -152,3 +152,16 @@ def register_user(request):
 			return redirect('register')
 	else:
 		return render(request, 'register.html', {'form':form})
+
+# yuh
+def product_detail(request, slug):
+    product = Product.objects.get(slug=slug)
+
+    if product.sale_price:
+        product.savings = product.price - product.sale_price
+    else:
+        product.savings = 0
+
+    return render(request, "product_detail.html", {
+        "product": product
+    })
